@@ -34,6 +34,39 @@ function findFirstBelow(scores, passScore) {
     return -1;
 }
 
+// Trả về điểm trung bình của các điểm hợp lệ từ 0 đến 10, hoặc null nếu không có điểm hợp lệ
+function averageValidScores(scores) {
+    let totalScore = 0;
+    let validCount = 0;
+
+    for (const score of scores) {
+        const isValid = typeof score === "number" && score >= 0 && score <= 10;
+        if (!isValid) {
+            continue;
+        }
+        totalScore += score;
+        validCount++;
+    }
+
+    if (validCount === 0) {
+        return null;
+    }
+    return totalScore / validCount;
+}
+
+// Trả về tổng số bài học đã hoàn thành (giá trị true) ở tất cả các khóa học
+function countCompletedLessons(courses) {
+    let completedCount = 0;
+    for (const course of courses) {
+        for (const isCompleted of course) {
+            if (isCompleted === true) {
+                completedCount++;
+            }
+        }
+    }
+    return completedCount;
+}
+
 
 
 // ================== TEST =========================
@@ -49,3 +82,17 @@ console.log("Không có ai đạt:", countAtLeast([4, 5, 6], 7));               
 console.log("\n========== TEST 3: findFirstBelow ==========");
 console.log("Tìm vị trí < 5 đầu tiên:", findFirstBelow([8, 7, 4.5, 9, 3], 5));   // Mong đợi: 2
 console.log("Tất cả đều đạt:", findFirstBelow([6, 7, 8], 5));                    // Mong đợi: -1
+
+console.log("\n========== TEST 4: averageValidScores ==========");
+console.log("Lọc dữ liệu rác:", averageValidScores([8, "chín", 12, -2, null, 10]));   // Mong đợi: 9
+console.log("Toàn dữ liệu lỗi:", averageValidScores(["abc", -5, 15, undefined]));     // Mong đợi: null
+console.log("Mảng rỗng:", averageValidScores([]));                                    // Mong đợi: null
+
+console.log("\n========== TEST 5: countCompletedLessons ==========");
+const testCourses = [
+    [true, false, true],  // 2 bài xong
+    [true, true],         // 2 bài xong
+    [false, false]        // 0 bài xong
+];
+console.log("Tổng bài hoàn thành:", countCompletedLessons(testCourses));  // Mong đợi: 4
+console.log("Mảng rỗng:", countCompletedLessons([]));                     // Mong đợi: 0
